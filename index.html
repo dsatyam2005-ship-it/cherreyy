@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open When... Letters For You 💌</title>
+  
+  <!-- Romantic & vintage Google Fonts matching the reference -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Sacramento&family=Playfair+Display:ital,wght@0,500;0,600;1,400&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      /* Original woven gingham image from Pinterest, scaled to cover the viewport */
+      background-color: #f4ead7;
+      background-image: url("https://i.pinimg.com/originals/f1/db/25/f1db2571e04ee6da8704d3184c7dd30a.jpg");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      font-family: 'Lora', Georgia, serif;
+      padding: 30px 18px;
+      overflow-x: hidden;
+    }
+
+    /* ===== MAIN APP WRAPPER ===== */
+    .app-container {
+      width: 100%;
+      max-width: 660px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    /* ===== SCREENS ===== */
+    .screen {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      animation: fadeInScreen 0.35s ease-out forwards;
+    }
+    .screen.active {
+      display: flex;
+    }
+
+    @keyframes fadeInScreen {
+      from { opacity: 0; transform: translateY(8px) scale(0.98); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* ===== TORN PAPER CARD (LARGER SIZE) ===== */
+    .torn-card-container {
+      position: relative;
+      width: 100%;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    /* Torn Paper Background layer with rough deckle edges */
+    .torn-paper-bg {
+      position: absolute;
+      inset: 0;
+      background: #fffcf9;
+      background-image: 
+        radial-gradient(ellipse at 50% 50%, #ffffff 0%, #fff7f7 75%, #fdf0f2 100%);
+      border-radius: 4px;
+      filter: url(#torn-edges) drop-shadow(0 16px 36px rgba(185, 80, 110, 0.24));
+      z-index: 1;
+    }
+
+    /* Paper Content Container (Keeps text & buttons 100% crisp & undisturbed) */
+    .torn-paper-content {
+      position: relative;
+      z-index: 2;
+      padding: 46px 36px 36px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    /* ===== REALISTIC WATERCOLOR FLOWER (TOP RIGHT) ===== */
+    .realistic-flower {
+      position: absolute;
+      top: -42px;
+      right: -28px;
+      width: 155px;
+      height: 155px;
+      object-fit: contain;
+      pointer-events: none;
+      z-index: 10;
+      transform: rotate(18deg);
+      filter: drop-shadow(2px 6px 10px rgba(140, 50, 70, 0.2));
+      animation: gentleFlowerSway 6s ease-in-out infinite;
+    }
+
+    @keyframes gentleFlowerSway {
+      0%, 100% { transform: rotate(18deg) scale(1); }
+      50%      { transform: rotate(23deg) scale(1.05); }
+    }
+
+    /* ===== SCRIPT TYPOGRAPHY (SLIGHTLY LARGER) ===== */
+    .handwritten-title {
+      font-family: 'Sacramento', 'Dancing Script', cursive;
+      font-size: 3.8rem;
+      font-weight: 500;
+      color: #8c2b3e; /* Deep rich burgundy as in reference */
+      line-height: 1.15;
+      margin-bottom: 16px;
+      letter-spacing: 0.5px;
+      text-shadow: 0 1px 1px rgba(255,255,255,0.8);
+    }
+
+    .yay-badge {
+      font-family: 'Caveat', cursive;
+      font-size: 1.55rem;
+      color: #c96277;
+      margin-bottom: 2px;
+      font-weight: 700;
+    }
+
+    /* ===== SCREEN 2 SIGNATURE LAYOUT: [ yes ] (Sticker) [ no ] ===== */
+    .prompt-action-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    /* Center animated cute sticker (Made larger as requested) */
+    .center-sticker {
+      width: 175px;
+      height: 145px;
+      object-fit: contain;
+      filter: drop-shadow(0 6px 12px rgba(160, 60, 80, 0.14));
+      animation: stickerBob 3.2s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    .pin-cat-gif {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border: 6px solid #fffaf0;
+      border-radius: 4px;
+      outline: 1px solid #c9af98;
+      background: #fffaf0;
+      box-shadow: 4px 7px 14px rgba(56, 35, 34, .2);
+    }
+
+    @keyframes stickerBob {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50%      { transform: translateY(-8px) scale(1.04); }
+    }
+
+    /* Pill capsule buttons matching reference */
+    .capsule-btn {
+      background: #fff8f8;
+      border: 2px solid #3c2928; /* Crisp dark espresso outline */
+      padding: 9px 36px;
+      border-radius: 999px;
+      font-family: 'Courier Prime', 'Lora', serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #2e1d1c;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      text-decoration-thickness: 1.6px;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #3c2928, 0 8px 16px rgba(60, 41, 40, 0.16);
+      transition: all 0.12s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .capsule-btn:hover {
+      background: #fff0f3;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 #3c2928, 0 10px 20px rgba(60, 41, 40, 0.22);
+    }
+
+    .capsule-btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #3c2928, 0 4px 8px rgba(60, 41, 40, 0.15);
+    }
+
+    /* Single button layout for screens 1, 3, 4 */
+    .single-action-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      margin-top: 8px;
+    }
+    .sticker-solo {
+      width: 160px;
+      height: 135px;
+      object-fit: contain;
+      filter: drop-shadow(0 6px 12px rgba(160, 60, 80, 0.14));
+      animation: stickerBob 3.5s ease-in-out infinite;
+    }
+
+    /* ===== ENVELOPES HUB ===== */
+    .envelopes-title {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2.5rem;
+      color: #8c2b3e;
+      margin-bottom: 18px;
+    }
+
+    .envelopes-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 18px;
+      max-width: 520px;
+      margin: 8px 0 16px;
+    }
+
+    .envelope-item {
+      width: 145px;
+      height: 100px;
+      background: linear-gradient(150deg, #87233c, #5e1124);
+      border-radius: 6px;
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.22s ease;
+      box-shadow: 0 5px 0 #3e0c19, 0 8px 18px rgba(70, 15, 30, 0.28);
+    }
+    .envelope-item:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 0 #3e0c19, 0 14px 24px rgba(70, 15, 30, 0.35);
+    }
+    .envelope-item:active {
+      transform: translateY(1px);
+      box-shadow: 0 2px 0 #3e0c19;
+    }
+
+    .envelope-sheet {
+      position: absolute;
+      top: -16px;
+      width: 126px;
+      height: 72px;
+      background: #fffdfa;
+      border-radius: 4px;
+      border: 1px solid #f2d7dd;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.06);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      text-align: center;
+      transition: top 0.2s ease;
+    }
+    .envelope-item:hover .envelope-sheet {
+      top: -24px;
+    }
+
+    .envelope-tag {
+      font-size: 0.68rem;
+      font-family: 'Lora', serif;
+      color: #b05c6d;
+      text-transform: lowercase;
+    }
+    .envelope-subject {
+      font-family: 'Caveat', cursive;
+      font-size: 1.08rem;
+      color: #4a1521;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+    .envelope-stamp-thumb {
+      width: 26px;
+      height: 26px;
+      border-radius: 4px;
+      object-fit: cover;
+      margin-top: 3px;
+      border: 1px solid rgba(140, 50, 70, 0.22);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+      z-index: 3;
+      transition: transform 0.2s ease;
+    }
+    .envelope-item:hover .envelope-stamp-thumb {
+      transform: scale(1.1);
+    }
+
+    .envelope-tri-flap {
+      position: absolute;
+      top: 0; left: 0;
+      width: 0; height: 0;
+      border-left: 72px solid transparent;
+      border-right: 72px solid transparent;
+      border-top: 48px solid #4a0d1b;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .nav-arrow-btn {
+      align-self: flex-end;
+      margin-top: 10px;
+      margin-right: 12px;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #c7dcfb;
+      border: 2px solid #8ab4f8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 3px 0 #72a2e4, 0 5px 12px rgba(0,0,0,0.1);
+      transition: all 0.15s ease;
+    }
+    .nav-arrow-btn:hover {
+      transform: translateY(-2px);
+      background: #b2d0fa;
+    }
+    .nav-arrow-btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #72a2e4;
+    }
+
+    /* ===== LETTER DETAIL VIEW ===== */
+    .letter-message {
+      font-size: 1.12rem;
+      line-height: 1.78;
+      color: #3b1e25;
+      font-style: italic;
+      text-align: center;
+      margin: 12px 14px 18px;
+    }
+
+    .letter-sticker-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .polaroid-frame {
+      background: #ffffff;
+      padding: 9px 9px 18px;
+      border: 1px solid #ebd0d7;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+      border-radius: 3px;
+      width: 155px;
+      text-align: center;
+      animation: polaroidRock 4s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    @keyframes polaroidRock {
+      0%, 100% { transform: rotate(-3.5deg); }
+      50%      { transform: rotate(2.5deg); }
+    }
+    .polaroid-frame img {
+      width: 100%;
+      height: 135px;
+      object-fit: cover;
+      border-radius: 2px;
+    }
+    .polaroid-frame .image-emoji-fallback {
+      width: 100%;
+      height: 135px;
+      border-radius: 2px;
+      background: linear-gradient(145deg, #fff0f3, #f8dbe2);
+      font-size: 3rem;
+    }
+    .polaroid-frame span {
+      display: block;
+      margin-top: 6px;
+      font-family: 'Caveat', cursive;
+      font-size: 1.25rem;
+      color: #8c3b4e;
+    }
+
+    .round-back-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #c7dcfb;
+      border: 2px solid #8ab4f8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      margin-top: 14px;
+      box-shadow: 0 3px 0 #72a2e4, 0 5px 12px rgba(0,0,0,0.1);
+      transition: all 0.15s ease;
+    }
+    .round-back-btn:hover {
+      transform: scale(1.1);
+      background: #b2d0fa;
+    }
+    .round-back-btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #72a2e4;
+    }
+
+    .image-emoji-fallback {
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      line-height: 1;
+      text-align: center;
+      filter: drop-shadow(0 6px 12px rgba(160, 60, 80, 0.14));
+    }
+
+
+    /* ===== MUSIC INTRO GATE ===== */
+    .music-choice-list{display:grid;gap:10px;width:100%;max-width:455px;margin:8px 0 10px;text-align:left}
+    .music-choice{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1.5px solid #edcbd4;border-radius:15px;background:#fffaf9;cursor:pointer;transition:transform .2s,border-color .2s,background .2s;box-shadow:0 3px 0 rgba(140,43,62,.05)}
+    .music-choice:hover{transform:translateY(-2px);border-color:#c96277}
+    .music-choice.selected{background:#fff0f3;border-color:#b94e6b;box-shadow:0 0 0 2px rgba(185,78,107,.08)}
+    .music-choice input{accent-color:#b94e6b;flex-shrink:0}
+    .music-choice-icon{font-size:1.5rem}
+    .music-choice-copy{display:flex;flex-direction:column;gap:3px;flex:1}
+    .music-choice-copy strong{font-size:.93rem;color:#64283a}
+    .music-choice-copy small{font-size:.75rem;color:#a16c7b;line-height:1.4}
+    .music-choice-check{font-size:1.3rem;color:#b94e6b;opacity:0}
+    .music-choice.selected .music-choice-check{opacity:1}
+    .music-custom-link{display:none;width:100%;max-width:455px;margin:0 0 10px}
+    .music-custom-link.show{display:block}
+    .music-custom-link input{width:100%;padding:12px 14px;border:1.5px solid #edcbd4;border-radius:12px;background:#fff;color:#4a1521;font: .9rem 'Lora',serif;outline-color:#b94e6b}
+    .music-note{font-size:.72rem;color:#a16c7b;line-height:1.5;max-width:430px;margin:3px 0 17px}
+    #music-gate .torn-paper-content{padding-top:38px}
+    #music-gate .realistic-flower{width:125px;height:125px}
+    @media(max-width:600px){#music-gate .handwritten-title{font-size:2.45rem!important}#music-gate .torn-paper-content{padding:30px 16px 24px}.music-choice{padding:10px}.music-choice-copy small{font-size:.7rem}}
+
+    /* ===== FLOATING ROMANTIC MUSIC PLAYER BAR ===== */
+    .floating-music-bar {
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      background: rgba(255, 252, 248, 0.95);
+      border: 1.5px solid rgba(197, 105, 125, 0.38);
+      box-shadow: 0 10px 28px rgba(140, 43, 62, 0.18), 0 2px 8px rgba(0,0,0,0.06);
+      border-radius: 40px;
+      padding: 8px 18px 8px 10px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 9999;
+      backdrop-filter: blur(10px);
+      transform: translateY(120px);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .floating-music-bar.active {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .music-disc {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #b94e6b 25%, #8c2b3e 65%, #42101b 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 15px;
+      box-shadow: 0 2px 8px rgba(140, 43, 62, 0.3);
+      animation: discSpin 4s linear infinite;
+      flex-shrink: 0;
+    }
+    .music-disc.paused {
+      animation-play-state: paused;
+    }
+    @keyframes discSpin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    .music-info {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+      max-width: 175px;
+    }
+    .music-track-title {
+      font-family: 'Caveat', cursive;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #8c2b3e;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.15;
+    }
+    .music-track-artist {
+      font-size: 0.72rem;
+      color: #9d5a6b;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.2;
+    }
+    .music-ctrl-btn {
+      background: #fde8ed;
+      border: 1px solid #f2bac7;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #8c2b3e;
+      font-size: 13px;
+      transition: transform 0.15s, background 0.15s;
+      flex-shrink: 0;
+    }
+    .music-ctrl-btn:hover {
+      background: #fad2dc;
+      transform: scale(1.12);
+    }
+    .music-ctrl-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      .handwritten-title { font-size: 2.8rem; }
+      .center-sticker { width: 130px; height: 110px; }
+      .capsule-btn { padding: 7px 24px; font-size: 1.1rem; }
+      .prompt-action-row { gap: 12px; }
+      .realistic-flower { width: 115px; height: 115px; top: -32px; right: -18px; }
+      .torn-paper-content { padding: 34px 18px 26px; }
+    }
+  
+    /* Live floating emojis seen throughout the reference video */
+    .live-emoji-layer{
+      position:fixed; inset:0; overflow:hidden; pointer-events:none;
+      z-index:20; contain:layout paint;
+    }
+    .live-emoji{
+      position:absolute; bottom:-52px; left:var(--x); font-size:var(--size);
+      opacity:0; filter:drop-shadow(0 2px 2px rgba(125,45,75,.12));
+      animation:emojiFloat var(--duration) linear forwards;
+      will-change:transform,opacity; user-select:none;
+    }
+    @keyframes emojiFloat{
+      0%{transform:translate3d(0,0,0) rotate(-12deg) scale(.7);opacity:0}
+      10%{opacity:var(--opacity)}
+      50%{transform:translate3d(var(--drift),-52vh,0) rotate(12deg) scale(1)}
+      90%{opacity:var(--opacity)}
+      100%{transform:translate3d(var(--drift),-112vh,0) rotate(-18deg) scale(.82);opacity:0}
+    }
+    .emoji-pop{
+      position:fixed; z-index:80; pointer-events:none; font-size:25px;
+      animation:emojiPop 1.05s ease-out forwards;
+    }
+    @keyframes emojiPop{
+      0%{opacity:0;transform:translate(-50%,-40%) scale(.35) rotate(-15deg)}
+      20%{opacity:1;transform:translate(-50%,-65%) scale(1.2) rotate(8deg)}
+      100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% - 115px)) scale(.75) rotate(30deg)}
+    }
+    @media(prefers-reduced-motion:reduce){
+      .live-emoji{animation-duration:22s!important}
+      .emoji-pop{animation:none;opacity:0}
+    }
+
+  
+    /* Extra paper sheet peeking from behind the main center card, like the video */
+    .torn-card-container::before{
+      content:""; position:absolute; inset:8px -8px -7px 8px;
+      background:#fff8f6; border:1px solid rgba(192,126,143,.24);
+      transform:rotate(1.4deg); z-index:0;
+      box-shadow:0 10px 24px rgba(140,70,90,.09);
+      clip-path:polygon(1% 2%,8% 0,17% 1.2%,28% 0,39% 1%,50% 0,63% 1%,75% 0,88% 1%,99% 0,100% 15%,99% 27%,100% 42%,99% 58%,100% 73%,99% 88%,100% 99%,86% 100%,72% 99%,58% 100%,43% 99%,28% 100%,13% 99%,0 100%,1% 84%,0 69%,1% 54%,0 38%,1% 20%);
+      pointer-events:none;
+    }
+    .torn-card-container::after{
+      content:""; position:absolute; inset:4px -4px -4px 4px;
+      background:#fffdfb; transform:rotate(-.7deg); z-index:0;
+      border:1px solid rgba(192,126,143,.15);
+      pointer-events:none;
+    }
+    .torn-paper-bg{z-index:1!important}
+    .torn-paper-content{z-index:2!important}
+    @media(max-width:600px){
+      .torn-card-container::before{inset:5px -4px -5px 4px}
+      .torn-card-container::after{inset:3px -2px -3px 2px}
+    }
+
+    /* Scrapbook paper details */
+    .torn-paper-bg {
+      background-color: #fffaf4;
+      background-image:
+        radial-gradient(ellipse at 50% 40%, rgba(255,255,255,.96), rgba(255,246,241,.94) 76%, rgba(250,232,226,.92)),
+        repeating-linear-gradient(0deg, rgba(132,92,74,.025) 0 1px, transparent 1px 5px);
+    }
+    .torn-paper-content::before {
+      content: "";
+      position: absolute;
+      top: -12px;
+      left: 17%;
+      width: 76px;
+      height: 23px;
+      background: repeating-linear-gradient(135deg, rgba(255,255,255,.42) 0 6px, transparent 6px 12px), #b9d3c4;
+      opacity: .82;
+      transform: rotate(-8deg);
+      box-shadow: 0 2px 4px rgba(91,66,56,.12);
+      pointer-events: none;
+      z-index: 3;
+    }
+    .torn-paper-content::after {
+      content: "";
+      position: absolute;
+      inset: 17px 18px 14px;
+      border: 1px dashed rgba(151,103,98,.28);
+      pointer-events: none;
+      z-index: 3;
+    }
+    .capsule-btn {
+      background: #fff7e9;
+      border: 1.5px solid #9b5360;
+      border-radius: 5px 12px 5px 12px;
+      color: #632d3b;
+      box-shadow: 0 3px 0 #9b5360, 0 7px 14px rgba(86,47,49,.13);
+    }
+    .capsule-btn:hover {
+      background: #f7e8d1;
+      box-shadow: 0 5px 0 #9b5360, 0 9px 18px rgba(86,47,49,.17);
+    }
+    .envelope-item {
+      --envelope-front: #b96778;
+      --envelope-dark: #8e4058;
+      --envelope-flap: #733047;
+      background: linear-gradient(150deg, var(--envelope-front), var(--envelope-dark));
+      border: 1px solid rgba(88,43,54,.32);
+      border-radius: 3px;
+      box-shadow: 0 4px 0 var(--envelope-flap), 0 9px 16px rgba(70,15,30,.2);
+      transform: rotate(-1.5deg);
+    }
+    .envelope-item:nth-child(2) {
+      --envelope-front: #83a6a0;
+      --envelope-dark: #547c79;
+      --envelope-flap: #426562;
+      transform: rotate(1.5deg);
+    }
+    .envelope-item:nth-child(3) {
+      --envelope-front: #d7a56d;
+      --envelope-dark: #b87c51;
+      --envelope-flap: #965b45;
+      transform: rotate(-1deg);
+    }
+    .envelope-item:nth-child(4) {
+      --envelope-front: #a9a2c2;
+      --envelope-dark: #797394;
+      --envelope-flap: #5d5876;
+      transform: rotate(1.2deg);
+    }
+    .envelope-item:nth-child(5) {
+      --envelope-front: #d58272;
+      --envelope-dark: #ad5d58;
+      --envelope-flap: #874344;
+      transform: rotate(-1.4deg);
+    }
+    .envelope-item::after {
+      content: "";
+      position: absolute;
+      inset: 6px;
+      border: 1px dashed rgba(255,245,230,.5);
+      pointer-events: none;
+    }
+    .envelope-item:hover {
+      transform: rotate(0) translateY(-6px);
+      box-shadow: 0 8px 0 var(--envelope-flap), 0 13px 20px rgba(70,15,30,.25);
+    }
+    .envelope-item:active {
+      transform: rotate(0) translateY(1px);
+    }
+    .envelope-sheet {
+      top: -34px;
+      height: 76px;
+      background: #fff8e8;
+      border: 1px solid #e6c9ac;
+      border-radius: 2px;
+      transform: rotate(-1deg);
+      justify-content: flex-start;
+      padding-top: 3px;
+    }
+    .envelope-item:hover .envelope-sheet {
+      top: -40px;
+    }
+    .envelope-tag,
+    .envelope-subject {
+      position: relative;
+      z-index: 3;
+    }
+    .envelope-tag {
+      color: #8d6870;
+      font-size: .64rem;
+      letter-spacing: .04em;
+    }
+    .envelope-subject {
+      color: #593244;
+      font-size: 1.05rem;
+    }
+    .envelope-tri-flap {
+      border-top-color: var(--envelope-flap, #4a0d1b);
+    }
+    .letter-message {
+      padding: 8px 14px;
+      border-left: 2px solid rgba(119,153,145,.48);
+      background: repeating-linear-gradient(to bottom, transparent 0 31px, rgba(126,151,165,.12) 31px 32px);
+      text-align: left;
+    }
+    @media (max-width: 600px) {
+      .torn-paper-content::before { left: 12%; }
+      .torn-paper-content::after { inset: 12px 10px 10px; }
+      .envelopes-container { gap: 16px 12px; }
+      .envelope-item { width: min(42vw, 145px); }
+      .realistic-flower { width: 88px; height: 88px; top: -24px; right: 0; }
+      #music-gate .realistic-flower { width: 88px; height: 88px; top: -24px; right: 0; }
+      .pin-cat-gif { width: 105px; height: 105px; }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="live-emoji-layer" id="liveEmojiLayer" aria-hidden="true"></div>
+
+  <!-- SVG Filter for Authentic Torn Paper Edges -->
+  <svg style="position:absolute;width:0;height:0;overflow:hidden;" aria-hidden="true">
+    <defs>
+      <filter id="torn-edges" x="-5%" y="-5%" width="110%" height="110%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="4" seed="8" result="noise"/>
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="7.5" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+    </defs>
+  </svg>
+
+  <div class="app-container">
+
+    <!-- MUSIC GATE: choose a soundtrack before entering the love story -->
+    <div class="screen active" id="music-gate">
+      <div class="torn-card-container">
+        <div class="torn-paper-bg"></div>
+        <img class="realistic-flower" src="flower-transparent.png" alt="Flower">
+        <div class="torn-paper-content">
+          <p class="yay-badge">just for you ♡</p>
+          <h1 class="handwritten-title" style="font-size:3.25rem;">before our little story...</h1>
+          <p style="color:#8c2b3e;line-height:1.65;margin:0 0 16px;max-width:430px;">choose the music that feels right, then come inside 💗</p>
+          <div class="music-choice-list">
+            <label class="music-choice selected" data-mode="default">
+              <input type="radio" name="musicChoice" value="default" checked>
+              <span class="music-choice-icon">🌷</span><span class="music-choice-copy"><strong>Our default song</strong><small>Plays romantic song directly on this page ♡</small></span><span class="music-choice-check">♡</span>
+            </label>
+            <label class="music-choice" data-mode="surprise">
+              <input type="radio" name="musicChoice" value="surprise">
+              <span class="music-choice-icon">🎲</span><span class="music-choice-copy"><strong>Surprise me</strong><small>Plays a random romantic song from top 10 ♡</small></span><span class="music-choice-check">♡</span>
+            </label>
+            <label class="music-choice" data-mode="choose">
+              <input type="radio" name="musicChoice" value="choose">
+              <span class="music-choice-icon">🎧</span><span class="music-choice-copy"><strong>I'll choose my own</strong><small>Pick a song & redirect to Spotify.</small></span><span class="music-choice-check">♡</span>
+            </label>
+          </div>
+          <div class="music-custom-link" id="musicCustomLink">
+            <input id="visitorSpotifyLink" type="url" placeholder="Paste a Spotify song link (optional)" aria-label="Your Spotify song link">
+          </div>
+          <p class="music-note" id="musicGateNote">Default & Surprise play directly right here with no redirect. Only "I'll choose my own" opens Spotify ♡</p>
+          <button class="capsule-btn" onclick="enterLoveStory()"><u>enter our story ♡</u></button>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- SCREEN 1: "I made something for you" -->
+    <div class="screen" id="step-1">
+      <div class="torn-card-container">
+        <div class="torn-paper-bg"></div>
+        <img class="realistic-flower" src="flower-transparent.png" alt="Flower">
+        <div class="torn-paper-content">
+          <h1 class="handwritten-title">I made something for you</h1>
+          <div class="single-action-box">
+            <video class="sticker-solo" src="https://v1.pinimg.com/videos/mc/720p/92/d7/1d/92d71d392ca53baebb0682b907324ade.mp4" poster="https://i.pinimg.com/736x/38/8e/d1/388ed1a68bca40edb975644ca65c797a.jpg" autoplay muted loop playsinline aria-label="Animated cat holding a heart envelope"></video>
+            <button class="capsule-btn" onclick="goTo('step-2')"><u>what?</u></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 2: "Will you See it?" (EXACT MATCH TO REFERENCE SCREENSHOT) -->
+    <div class="screen" id="step-2">
+      <div class="torn-card-container">
+        <div class="torn-paper-bg"></div>
+        <!-- Watercolor pink lily flower in top-right corner -->
+        <img class="realistic-flower" src="flower-transparent.png" alt="Flower">
+        
+        <div class="torn-paper-content">
+          <!-- Exact cursive script title -->
+          <h1 class="handwritten-title">Will you See it?</h1>
+          
+          <!-- Exact layout: [ yes ] (bears sticker) [ no ] -->
+          <div class="prompt-action-row">
+            <button class="capsule-btn" id="btn-yes" onclick="goTo('step-4')"><u>yes</u></button>
+            <img class="center-sticker pin-cat-gif" src="https://i.pinimg.com/originals/33/c1/0b/33c10be09979020e38da8d92a7d53031.gif" alt="Animated shy white cat sticker from Pinterest">
+            <button class="capsule-btn" id="btn-no" onclick="handleNoClick()"><u>no</u></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 3: "please say yes!" -->
+    <div class="screen" id="step-3">
+      <div class="torn-card-container">
+        <div class="torn-paper-bg"></div>
+        <img class="realistic-flower" src="flower-transparent.png" alt="Flower">
+        <div class="torn-paper-content">
+          <h1 class="handwritten-title">please say yes!</h1>
+          <div class="single-action-box">
+            <img class="sticker-solo" src="https://media.tenor.com/6KWWOtjSg0cAAAAM/milk-and-mocha-please.gif" alt="Pleading white cat and brown bear sticker">
+            <button class="capsule-btn" onclick="goTo('step-4')"><u>fine ♡</u></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 4: "are you ready for the surprise?" -->
+    <div class="screen" id="step-4">
+      <div class="torn-card-container">
+        <div class="torn-paper-bg"></div>
+        <img class="realistic-flower" src="flower-transparent.png" alt="Flower">
+        <div class="torn-paper-content">
+          <p class="yay-badge">yay ✨</p>
+          <h1 class="handwritten-title" style="font-size: 3.1rem;">are you ready for the surprise?</h1>
+          <div class="single-action-box">
+            <video class="sticker-solo" id="celebrationCatVideo" poster="https://i.pinimg.com/736x/ce/26/57/ce2657dc3e1fab0e26ff73e5c8c8becc.jpg" autoplay muted loop playsinline aria-label="Two animated dancing cats from Pinterest"></video>
+            <button class="capsule-btn" onclick="goTo('screen-envelopes')"><u>yes!!</u></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 5: ENVELOPES HUB -->
+    <div class="screen" id="screen-envelopes">
+      <div class="torn-card-container">
+        <div class="torn-paper-bg"></div>
+        <img class="realistic-flower" src="flower-transparent.png" alt="Flower">
+        <div class="torn-paper-content" style="padding: 34px 24px 26px;">
+          <h2 class="envelopes-title">open when...</h2>
+          
+          <div class="envelopes-container">
+            <div class="envelope-item" onclick="openLetter(1)">
+              <div class="envelope-sheet">
+                <span class="envelope-tag">open when...</span>
+                <span class="envelope-subject">you miss me</span>
+                <img class="envelope-stamp-thumb" src="miss_poster.jpg" alt="miss me sticker">
+              </div>
+              <div class="envelope-tri-flap"></div>
+            </div>
+
+            <div class="envelope-item" onclick="openLetter(2)">
+              <div class="envelope-sheet">
+                <span class="envelope-tag">open when...</span>
+                <span class="envelope-subject">you're sad</span>
+                <img class="envelope-stamp-thumb" src="sad_poster.jpg" alt="sad sticker">
+              </div>
+              <div class="envelope-tri-flap"></div>
+            </div>
+
+            <div class="envelope-item" onclick="openLetter(3)">
+              <div class="envelope-sheet">
+                <span class="envelope-tag">open when...</span>
+                <span class="envelope-subject">you're happy</span>
+                <img class="envelope-stamp-thumb" src="happy_poster.jpg" alt="happy sticker">
+              </div>
+              <div class="envelope-tri-flap"></div>
+            </div>
+
+            <div class="envelope-item" onclick="openLetter(4)">
+              <div class="envelope-sheet">
+                <span class="envelope-tag">open when...</span>
+                <span class="envelope-subject">you need a hug</span>
+                <img class="envelope-stamp-thumb" src="hug_poster.jpg" alt="need hug sticker">
+              </div>
+              <div class="envelope-tri-flap"></div>
+            </div>
+
+            <div class="envelope-item" onclick="openLetter(5)">
+              <div class="envelope-sheet">
+                <span class="envelope-tag">open when...</span>
+                <span class="envelope-subject">we fight</span>
+                <img class="envelope-stamp-thumb" src="fight_poster.jpg" alt="we fight sticker">
+              </div>
+              <div class="envelope-tri-flap"></div>
+            </div>
+          </div>
+
+          <!-- Next arrow to final letter -->
+          <div class="nav-arrow-btn" title="Final Note" onclick="goTo('screen-final')">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#3b6dbb"><path d="M5 3l14 9-14 9V3z"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LETTER 1: When you miss me -->
+    <div class="screen" id="letter-1">
+      <div class="torn-card-container">
+        <div class="torn-paper-bg"></div>
+        <img class="realistic-flower" src="flower-transparent.png" alt="Flower">
+        <div class="torn-paper-content">
+          <h2 class="handwritten-title" style="font-size: 2.8rem;">when you miss me...</h2>
+          <p class="letter-message">
+            "Hey love, if you're reading this, I'm guessing you're missing me. I miss you too, probably more than you know. Close your eyes and imagine me holding your hand, annoying you, making you laugh. Distance is temporary. What we have isn't. I'm always yours."
+          </p>
+          <div class="letter-sticker-row">
+            <video class="sticker-solo" src="miss_video.mp4" poster="miss_poster.jpg" autoplay muted loop playsinline aria-label="Cute animated character for when you miss me"></video>
+          </div>
+          <div class="round-back-btn" onclick="goTo('screen-envelopes')" title="Back to envelopes">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M12 19l-7-7 7-7" stroke="#3b6dbb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LETTER 2: When you're sad -->
+    <div class="screen" id="letter-2">
+      <div class="torn-card-container">
+        <div class="torn-paper-bg"></div>
+        <img class="realistic-flower" src="flower-transparent.png" alt="Flower">
+        <div class="torn-paper-content">
+          <h2 class="handwritten-title" style="font-size: 2.8rem;">when you're sad...</h2>
+          <p class="letter-message">
+            "Hi baby, I hate the thought of you feeling low. Whatever happened, it doesn't define you. You're stronger, softer, and more beautiful than you realize. Let yourself feel it, but don't stay there. I'm right beside you in this, cheering you on, always."
+          </p>
+          <div class="letter-sticker-row">
+            <video class="sticker-solo" src="sad_video.mp4" poster="sad_poster.jpg" autoplay muted loop playsinline aria-label="Cute animated character for when you are sad"></video>
+          </div>
+          <div class="round-back-btn" onclick="goTo('screen-envelopes')" title="Back to envelopes">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M12 19l-7-7 7-7" stroke="#3b6dbb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LETTER 3: When you're happy -->
+    <div class="screen" id="letter-3">
+      <div class="torn-card-container">
+        <div class="torn-paper-bg"></div>
+        <img class="realistic-flower" src="flower-transparent.png" alt="Flower">
+        <div class="torn-paper-content">
+          <h2 class="handwritten-title" style="font-size: 2.8rem;">when you're happy...</h2>
+          <p class="letter-message">
+            "Seeing you happy is my favorite sight in this whole universe! Keep that gorgeous smile on your face today. I hope this joy stays with you and brightens everything you touch. You deserve the best, always!"
+          </p>
+          <div class="letter-sticker-row">
+            <video class="sticker-solo" src="happy_video.mp4" poster="happy_poster.jpg" autoplay muted loop playsinline aria-label="Cute animated character for when you are happy"></video>
+          </div>
+          <div class="round-back-btn" onclick="goTo('screen-envelopes')" title="Back to envelopes">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M12 19l-7-7 7-7" stroke="#3b6dbb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LETTER 4: When you need a hug -->
+    <div class="screen" id="letter-4">
+      <div class="torn-card-container">
+        <div class="torn-paper-bg"></div>
+        <img class="realistic-flower" src="flower-transparent.png" alt="Flower">
+        <div class="torn-paper-content">
+          <h2 class="handwritten-title" style="font-size: 2.8rem;">when you need a hug...</h2>
+          <p class="letter-message">
+            "Sending you the tightest, warmest virtual hug right now! Wrap your arms around yourself and squeeze — that's from me to you. You are never alone, and I'm always just one call away."
+          </p>
+          <div class="letter-sticker-row">
+            <video class="sticker-solo" src="hug_video.mp4" poster="hug_poster.jpg" autoplay muted loop playsinline aria-label="Cute animated character for when you need a hug"></video>
+          </div>
+          <div class="round-back-btn" onclick="goTo('screen-envelopes')" title="Back to envelopes">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M12 19l-7-7 7-7" stroke="#3b6dbb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LETTER 5: When we fight -->
+    <div class="screen" id="letter-5">
+      <div class="torn-card-container">
+        <div class="torn-paper-bg"></div>
+        <img class="realistic-flower" src="flower-transparent.png" alt="Flower">
+        <div class="torn-paper-content">
+          <h2 class="handwritten-title" style="font-size: 2.8rem;">when we fight...</h2>
+          <div style="display: flex; align-items: center; gap: 18px; margin: 8px 0; text-align: left;">
+            <div class="polaroid-frame">
+              <video src="fight_video.mp4" poster="fight_poster.jpg" autoplay muted loop playsinline style="width: 100%; height: 135px; object-fit: cover; border-radius: 2px;" aria-label="Cute animated character for when we fight"></video>
+              <span>i love you</span>
+            </div>
+            <p class="letter-message" style="margin: 0; font-size: 1.02rem; text-align: left;">
+              "If we just argued, take a breath. I never want us to be against each other. It's us versus the problem, always. I love you more than my ego, more than being right. Let's talk, fix it, and choose each other again."
+            </p>
+          </div>
+          <div class="round-back-btn" onclick="goTo('screen-envelopes')" title="Back to envelopes">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M12 19l-7-7 7-7" stroke="#3b6dbb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FINAL OUTRO SCREEN -->
+    <div class="screen" id="screen-final">
+      <div class="torn-card-container">
+        <div class="torn-paper-bg"></div>
+        <img class="realistic-flower" src="flower-transparent.png" alt="Flower">
+        <div class="torn-paper-content">
+          <h2 class="handwritten-title" style="font-size: 3.2rem;">Forever & Always ♡</h2>
+          <p class="letter-message" style="font-family: 'Dancing Script', cursive; font-size: 1.35rem; line-height: 1.85;">
+            "If you've made it through these letters, I hope at least one of them made you smile a little. I wrote these for the days I can't be right next to you. Whenever I'm not around, read one and remember — you are loved deeply, unconditionally, and without question. Always."
+          </p>
+          <video class="sticker-solo" src="https://v1.pinimg.com/videos/mc/720p/92/d7/1d/92d71d392ca53baebb0682b907324ade.mp4" poster="https://i.pinimg.com/736x/38/8e/d1/388ed1a68bca40edb975644ca65c797a.jpg" autoplay muted loop playsinline aria-label="Animated cat holding a heart envelope"></video>
+          <div class="round-back-btn" onclick="goTo('screen-envelopes')" title="Back to envelopes">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M12 19l-7-7 7-7" stroke="#3b6dbb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FLOATING ROMANTIC MUSIC PLAYER BAR -->
+  <div class="floating-music-bar" id="floatingMusicBar">
+    <div class="music-disc" id="musicDisc">🎵</div>
+    <div class="music-info">
+      <span class="music-track-title" id="playerSongTitle">Romantic Song</span>
+      <span class="music-track-artist" id="playerSongArtist">Playing for you ♡</span>
+    </div>
+    <button class="music-ctrl-btn" id="musicPlayToggleBtn" onclick="togglePlayMusic()" title="Play / Pause">⏸</button>
+    <button class="music-ctrl-btn" onclick="playRandomRomanticSong()" title="Next romantic song ♡">⏭</button>
+  </div>
+  <audio id="romanticAudioPlayer" preload="auto"></audio>
+
+  <script>
+
+    // Spotify links for custom mode only
+    const DEFAULT_SPOTIFY_URL = "https://open.spotify.com/track/1GFQthxDi4Tqe3wJ5j0G5S?si=85867dd2f0bd4603";
+    let selectedMusicMode = "default";
+
+    // 10 Curated Romantic Songs (plays directly on the site, no Spotify redirect!)
+    const ROMANTIC_SONGS = [
+      {
+        title: "Samjhawan",
+        artist: "Arijit Singh & Shreya Ghoshal",
+        src: "https://archive.org/download/best-of-2014-bollywood-songs/Humpty%20Sharma%20Ki%20Dulhania%20%282014%29%20-%2002%20-%20Samjhawan.mp3"
+      },
+      {
+        title: "Mast Magan",
+        artist: "Arijit Singh & Chinmayi Sripada",
+        src: "https://archive.org/download/best-of-2014-bollywood-songs/2%20States%20%282014%29%20-%2003%20-%20Mast%20Magan.mp3"
+      },
+      {
+        title: "Galliyan",
+        artist: "Ankit Tiwari",
+        src: "https://archive.org/download/best-of-2014-bollywood-songs/Ek%20Villain%20%282014%29%20-%2001%20-%20Galliyan.mp3"
+      },
+      {
+        title: "Muskurane",
+        artist: "Arijit Singh",
+        src: "https://archive.org/download/best-of-2014-bollywood-songs/Citylights%20%282014%29%20-%2001%20-%20Muskurane%20%28Romantic%29.mp3"
+      },
+      {
+        title: "Manwa Laage",
+        artist: "Arijit Singh & Shreya Ghoshal",
+        src: "https://archive.org/download/best-of-2014-bollywood-songs/Happy%20New%20Year%20%282014%29%20-%2002%20-%20Manwa%20Laage.mp3"
+      },
+      {
+        title: "Suno Na Sangemarmar",
+        artist: "Arijit Singh",
+        src: "https://archive.org/download/best-of-2014-bollywood-songs/Youngistaan%20%282014%29%20-%2001%20-%20Suno-Na-Sangemarmar.mp3"
+      },
+      {
+        title: "Meherbaan",
+        artist: "Ash King & Shilpa Rao",
+        src: "https://archive.org/download/best-of-2014-bollywood-songs/Bang%20Bang%21%20%282014%29%20-%2002%20-%20Meherbaan.mp3"
+      },
+      {
+        title: "Sawan Aaya Hai",
+        artist: "Arijit Singh",
+        src: "https://archive.org/download/best-of-2014-bollywood-songs/Creature%203D%20%282014%29%20-%2001%20-%20Sawan%20Aaya%20Hai.mp3"
+      },
+      {
+        title: "Baatein Ye Kabhi Na",
+        artist: "Arijit Singh & Shreya Ghoshal",
+        src: "https://archive.org/download/best-of-2014-bollywood-songs/Khamoshiyan%20%282014%29%20-%2008%20-%20Baatein%20Ye%20Kabhi%20Na%20%28Female%29.mp3"
+      },
+      {
+        title: "Tere Ho Ke Rahenge",
+        artist: "Arijit Singh",
+        src: "https://archive.org/download/best-of-2014-bollywood-songs/Raja%20Natwarlal%20-%2001%20-%20Tere%20Ho%20Ke%20Rahenge.mp3"
+      }
+    ];
+
+    let currentSongIndex = -1;
+    const audioPlayer = document.getElementById("romanticAudioPlayer");
+    const floatingMusicBar = document.getElementById("floatingMusicBar");
+    const playerSongTitle = document.getElementById("playerSongTitle");
+    const playerSongArtist = document.getElementById("playerSongArtist");
+    const musicPlayToggleBtn = document.getElementById("musicPlayToggleBtn");
+    const musicDisc = document.getElementById("musicDisc");
+
+    function playRandomRomanticSong() {
+      let nextIndex = Math.floor(Math.random() * ROMANTIC_SONGS.length);
+      if (nextIndex === currentSongIndex && ROMANTIC_SONGS.length > 1) {
+        nextIndex = (nextIndex + 1) % ROMANTIC_SONGS.length;
+      }
+      currentSongIndex = nextIndex;
+      const song = ROMANTIC_SONGS[currentSongIndex];
+      audioPlayer.src = song.src;
+      playerSongTitle.textContent = song.title;
+      playerSongArtist.textContent = song.artist;
+      floatingMusicBar.classList.add("active");
+      audioPlayer.play().then(() => {
+        musicPlayToggleBtn.textContent = "⏸";
+        musicDisc.classList.remove("paused");
+      }).catch(err => {
+        console.log("Audio play error:", err);
+      });
+    }
+
+    function togglePlayMusic() {
+      if (!audioPlayer.src) {
+        playRandomRomanticSong();
+        return;
+      }
+      if (audioPlayer.paused) {
+        audioPlayer.play();
+        musicPlayToggleBtn.textContent = "⏸";
+        musicDisc.classList.remove("paused");
+      } else {
+        audioPlayer.pause();
+        musicPlayToggleBtn.textContent = "▶";
+        musicDisc.classList.add("paused");
+      }
+    }
+
+    if (audioPlayer) {
+      audioPlayer.addEventListener("ended", () => {
+        // Automatically play next romantic song seamlessly
+        playRandomRomanticSong();
+      });
+    }
+
+    const celebrationCatVideo = document.getElementById("celebrationCatVideo");
+    const celebrationCatVideoUrl = "https://v1.pinimg.com/videos/mc/720p/61/c4/24/61c4242052c2f26f7263d1e03425a718.mp4";
+    function playCelebrationCats() {
+      if (celebrationCatVideo) celebrationCatVideo.play().catch(() => {});
+    }
+    if (celebrationCatVideo) {
+      celebrationCatVideo.addEventListener("canplay", playCelebrationCats, { once: true });
+      celebrationCatVideo.src = celebrationCatVideoUrl;
+    }
+
+    document.querySelectorAll(".music-choice").forEach(option => {
+      option.addEventListener("click", () => {
+        selectedMusicMode = option.dataset.mode;
+        document.querySelectorAll(".music-choice").forEach(item => {
+          item.classList.toggle("selected", item === option);
+          item.querySelector("input").checked = item === option;
+        });
+        document.getElementById("musicCustomLink").classList.toggle("show", selectedMusicMode === "choose");
+      });
+    });
+
+    function isSpotifyLink(url) {
+      return /^https:\/\/open\.spotify\.com\/(track|album|playlist|artist|episode|show)\//i.test((url || "").trim());
+    }
+
+    function enterLoveStory() {
+      if (selectedMusicMode === "choose") {
+        // ONLY redirect to Spotify when user selects "I'll choose my own"
+        const typedUrl = document.getElementById("visitorSpotifyLink").value.trim();
+        const spotifyUrl = isSpotifyLink(typedUrl) ? typedUrl : (typedUrl ? typedUrl : DEFAULT_SPOTIFY_URL);
+        window.open(spotifyUrl, "_blank", "noopener,noreferrer");
+      } else {
+        // Default song or Surprise me:
+        // DO NOT REDIRECT TO SPOTIFY! Just play random romantic song directly in the browser!
+        playRandomRomanticSong();
+      }
+      goTo("step-1");
+    }
+
+    function goTo(screenId) {
+      document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+      const target = document.getElementById(screenId);
+      if (target) {
+        target.classList.add('active');
+        if (screenId === "step-4") playCelebrationCats();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function openLetter(num) {
+      goTo('letter-' + num);
+      const letter = document.getElementById('letter-' + num);
+      if (letter) {
+        const vids = letter.querySelectorAll('video');
+        vids.forEach(v => {
+          v.currentTime = 0;
+          v.play().catch(() => {});
+        });
+      }
+    }
+
+
+    // If image assets aren't in the folder yet, show a cute emoji fallback instead of a broken image.
+    const imageEmojiByFile = {
+      "first.png": "😺💌",
+      "second.png": "😽💗",
+      "third.png": "🥺🐱",
+      "fourth.png": "😸🎉",
+      "fifth.png": "😿💌",
+      "sixth.png": "😿🤍",
+      "seventh.png": "😻✨",
+      "eighth.png": "🐱🫂",
+      "ninth.png": "😺💞"
+    };
+    document.querySelectorAll("img").forEach(img => {
+      img.addEventListener("error", () => {
+        if (img.dataset.fallbackDone) return;
+        img.dataset.fallbackDone = "1";
+        const fallback = document.createElement("span");
+        fallback.className = `${img.className} image-emoji-fallback`.trim();
+        const alt = (img.alt || "").toLowerCase();
+        const imageFile = img.getAttribute("src").split("/").pop();
+        fallback.textContent = alt.includes("flower") ? "🌸" : imageEmojiByFile[imageFile] || (alt.includes("pleading") ? "😿💗" : alt.includes("excited") ? "😸✨" : alt.includes("bear") || alt.includes("sticker") ? "😺💗" : alt === "us" ? "😻💗" : "😺");
+        if (img.classList.contains("realistic-flower")) {
+          fallback.style.fontSize = "4rem";
+        } else if (img.classList.contains("center-sticker") || img.classList.contains("sticker-solo")) {
+          fallback.style.fontSize = "4rem";
+          fallback.style.animation = "stickerBob 3.2s ease-in-out infinite";
+        } else if (img.closest(".polaroid-frame")) {
+          fallback.style.fontSize = "3rem";
+        }
+        img.replaceWith(fallback);
+      });
+    });
+
+    // Playful Easter egg on "no" button
+    let noAttempts = 0;
+    function handleNoClick() {
+      noAttempts++;
+      const btnNo = document.getElementById('btn-no');
+      if (noAttempts === 1) {
+        btnNo.innerHTML = '<u>rly?</u>';
+        btnNo.style.transform = 'translate(14px, -10px)';
+      } else {
+        goTo('step-3');
+      }
+    }
+  
+    // Continuous, gentle floating emoji animation, matching the reference's live hearts/stickers.
+    (function initLiveEmojis(){
+      const layer = document.getElementById('liveEmojiLayer');
+      if (!layer) return;
+      const emojis = ['😺','😸','😻','😽','🐾','🐱','💗','💕','💖','💘','💞','♡','✨','🌸','🌷','🦋','🎀','💌','🍒','🌹','💋','🫧'];
+      const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      function spawn(){
+        if (!layer) return;
+        const item = document.createElement('span');
+        item.className = 'live-emoji';
+        item.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        item.style.setProperty('--x', (2 + Math.random() * 94) + 'vw');
+        item.style.setProperty('--size', (14 + Math.random() * 20) + 'px');
+        item.style.setProperty('--duration', (reduced ? 20 : 8 + Math.random() * 9) + 's');
+        item.style.setProperty('--drift', ((Math.random() * 120) - 60) + 'px');
+        item.style.setProperty('--opacity', (0.38 + Math.random() * 0.42).toFixed(2));
+        layer.appendChild(item);
+        const duration = parseFloat(item.style.getPropertyValue('--duration'));
+        window.setTimeout(() => item.remove(), duration * 1000 + 250);
+      }
+      for(let i=0;i<9;i++) window.setTimeout(spawn, i*420);
+      window.setInterval(spawn, reduced ? 2800 : 900);
+    })();
+
+    // Small heart/sparkle burst when someone taps a choice, opens an envelope, or clicks a button.
+    function popLoveEmojis(x, y){
+      const bits = ['😺','🐾','💗','✨','💕','🌸','💖','♡','🍒','🦋'];
+      for(let i=0;i<5;i++){
+        const el=document.createElement('span');
+        el.className='emoji-pop';
+        el.textContent=bits[Math.floor(Math.random()*bits.length)];
+        el.style.left=(x + (Math.random()*42-21))+'px';
+        el.style.top=(y + (Math.random()*24-12))+'px';
+        el.style.setProperty('--dx',(Math.random()*90-45)+'px');
+        document.body.appendChild(el);
+        setTimeout(()=>el.remove(),1150);
+      }
+    }
+    document.addEventListener('click', function(e){
+      const target=e.target.closest('button, .envelope, .letter, [role="button"]');
+      if(target) popLoveEmojis(e.clientX, e.clientY);
+    });
+
+  </script>
+</body>
+</html>

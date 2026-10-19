@@ -1,0 +1,4 @@
+*.py
+pin_results.json
+.DS_Store
+Thumbs.db
